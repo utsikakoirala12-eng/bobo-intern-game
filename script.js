@@ -61,6 +61,11 @@ const scenes = {
 const storyTextEl = document.getElementById("story-text");
 const choicesEl = document.getElementById("choices");
 
+
+const resetBtn = document.getElementById("reset-btn");
+const clickSound = document.getElementById("click-sound");
+const firedSound = document.getElementById("fired-sound");
+
 function saveProgress(day) {
   localStorage.setItem("bobo-current-day", day);
 }
@@ -77,17 +82,25 @@ function loadProgress() {
 function renderScene(day) {
   const scene = scenes[day];
   currentDay = day;
-//save progress
+
+  // Save progress
   saveProgress(day);
 
-
   storyTextEl.textContent = scene.text;
+  // Fade-in effect
+    storyTextEl.classList.remove("fade-in"); 
+    void storyTextEl.offsetWidth; // force reflow
+    storyTextEl.classList.add("fade-in");
+
 
   // Add shake effect if fired
   if (day === "fired") {
-    storyTextEl.classList.add("shake");
-    setTimeout(() => storyTextEl.classList.remove("shake"), 500);
-  }
+  firedSound.currentTime = 0;
+  firedSound.play();
+
+  storyTextEl.classList.add("shake");
+  setTimeout(() => storyTextEl.classList.remove("shake"), 500);
+}
 
   choicesEl.innerHTML = "";
 
@@ -95,11 +108,25 @@ function renderScene(day) {
     const btn = document.createElement("button");
     btn.textContent = choice.label;
     btn.addEventListener("click", () => {
-      renderScene(choice.nextDay);
+        clickSound.currentTime = 0;
+        clickSound.play();
+        renderScene(choice.nextDay);
     });
+
     choicesEl.appendChild(btn);
   });
 }
+
+//reset btn
+resetBtn.addEventListener("click", () => {
+  localStorage.removeItem("bobo-current-day");
+  renderScene(0);
+});
+
+resetBtn.addEventListener("click", () => {
+  localStorage.removeItem("bobo-current-day");
+  renderScene(0); // go back to start
+});
 
 
 // Start game from saved progress
