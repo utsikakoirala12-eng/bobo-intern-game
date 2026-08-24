@@ -60,9 +60,9 @@ const scenes = {
 
 const storyTextEl = document.getElementById("story-text");
 const choicesEl = document.getElementById("choices");
-
-
 const resetBtn = document.getElementById("reset-btn");
+
+// Sound elements (may be null if files missing)
 const clickSound = document.getElementById("click-sound");
 const firedSound = document.getElementById("fired-sound");
 
@@ -83,51 +83,43 @@ function renderScene(day) {
   const scene = scenes[day];
   currentDay = day;
 
-  // Save progress
   saveProgress(day);
 
   storyTextEl.textContent = scene.text;
+
   // Fade-in effect
-    storyTextEl.classList.remove("fade-in"); 
-    void storyTextEl.offsetWidth; // force reflow
-    storyTextEl.classList.add("fade-in");
+  storyTextEl.classList.remove("fade-in");
+  void storyTextEl.offsetWidth;
+  storyTextEl.classList.add("fade-in");
 
-
-  // Add shake effect if fired
+  // Fired shake (sound disabled until files exist)
   if (day === "fired") {
-  firedSound.currentTime = 0;
-  firedSound.play();
+    // if (firedSound) { firedSound.currentTime = 0; firedSound.play(); }
 
-  storyTextEl.classList.add("shake");
-  setTimeout(() => storyTextEl.classList.remove("shake"), 500);
-}
+    storyTextEl.classList.add("shake");
+    setTimeout(() => storyTextEl.classList.remove("shake"), 500);
+  }
 
   choicesEl.innerHTML = "";
 
   scene.choices.forEach(choice => {
     const btn = document.createElement("button");
     btn.textContent = choice.label;
+
     btn.addEventListener("click", () => {
-        clickSound.currentTime = 0;
-        clickSound.play();
-        renderScene(choice.nextDay);
+      // if (clickSound) { clickSound.currentTime = 0; clickSound.play(); }
+      renderScene(choice.nextDay);
     });
 
     choicesEl.appendChild(btn);
   });
 }
 
-//reset btn
+// Reset button
 resetBtn.addEventListener("click", () => {
   localStorage.removeItem("bobo-current-day");
   renderScene(0);
 });
 
-resetBtn.addEventListener("click", () => {
-  localStorage.removeItem("bobo-current-day");
-  renderScene(0); // go back to start
-});
-
-
-// Start game from saved progress
+// Start game
 renderScene(loadProgress());
