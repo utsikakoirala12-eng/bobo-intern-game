@@ -79,15 +79,6 @@ button:hover {
     transform: translateY(0);
   }
 }
-#reset-btn {
-  float: right;
-  margin-top: 12px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #fafafa;
-  cursor: pointer;
-}
 .reset-container {
   display: flex;
   justify-content: flex-end;
@@ -95,9 +86,16 @@ button:hover {
 }
 
 #reset-btn {
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #fafafa;
+  border: none;
+  background: #ff4d4d;      /* red button */
+  color: white;             /* white text */
+  font-weight: bold;
   cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#reset-btn:hover {
+  background: #e60000;      /* darker red on hover */
 }
