@@ -79,3 +79,12 @@ button:hover {
     transform: translateY(0);
   }
 }
+#reset-btn {
+  float: right;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fafafa;
+  cursor: pointer;
+}
